@@ -1,0 +1,8 @@
+# example build from source of nginx
+https://www.nginx.com/blog/compiling-dynamic-modules-nginx-plus/
+
+# configure
+http://nginx.org/en/docs/configure.html
+
+# blog
+https://tejgop.github.io/nginx-module-guide/#the-c-file

@@ -1,0 +1,22 @@
+FROM alpine:3.17.3
+
+ENV NGX_V=1.24.0
+ENV NGX_DM=nginx-hello-world-module
+
+WORKDIR /root/
+
+RUN wget https://nginx.org/download/nginx-${NGX_V}.tar.gz && \
+    tar -zxvf nginx-${NGX_V}.tar.gz && \
+    rm nginx-${NGX_V}.tar.gz
+
+ADD ${NGX_DM} /root/${NGX_DM}
+
+WORKDIR /root/nginx-${NGX_V}
+
+RUN apk add --no-cache build-base pcre-dev zlib-dev util-linux-dev gd-dev libxml2-dev openssl-dev
+
+RUN ./configure --with-compat --add-dynamic-module=../${NGX_DM} --prefix=/var/www/html --sbin-path=/usr/sbin/nginx --conf-path=/etc/nginx/nginx.conf --http-log-path=/var/log/nginx/access.log --error-log-path=/var/log/nginx/error.log --with-pcre  --lock-path=/var/lock/nginx.lock --pid-path=/var/run/nginx.pid --with-http_ssl_module --with-http_image_filter_module=dynamic --modules-path=/etc/nginx/modules --with-http_v2_module --with-stream=dynamic --with-http_addition_module --with-http_mp4_module
+RUN make
+RUN make install 
+
+#RUN apk del build-base pcre-dev zlib-dev ssl-dev gd-dev libxml2-dev ossp-uuid-dev
