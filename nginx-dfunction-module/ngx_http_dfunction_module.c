@@ -114,7 +114,7 @@ static ngx_int_t ngx_http_dfunction_handler(ngx_http_request_t *r)
 
     char StringHelloWorld[50] = "Hello, world!";
 
-    u_char ngx_dfunction[] = *(unsigned char*)(&StringHelloWorld);
+    u_char ngx_dfunction[] = (unsigned char*)(&StringHelloWorld);
 
     b->pos = ngx_dfunction; /* first position in memory of the data */
     b->last = ngx_dfunction + sizeof(ngx_dfunction) - 1; /* last position in memory of the data */
