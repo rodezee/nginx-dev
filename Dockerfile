@@ -95,12 +95,9 @@ ADD ${NGX_DM} /root/${NGX_DM}
 
 WORKDIR /root/nginx-${NGX_V}
 
-RUN apk add --no-cache --virtual .compile build-base pcre-dev zlib-dev util-linux-dev gd-dev libxml2-dev openssl-dev&& \
-    ./configure --with-compat --add-dynamic-module=../${NGX_DM} && \
-    make modules && \
-    cp ./objs/${NGX_MN}.so /etc/nginx/modules/ && \
-    rm -Rf /root/* && \
-    apk del .compile
+RUN apk add --no-cache --virtual .compile build-base pcre-dev zlib-dev util-linux-dev gd-dev libxml2-dev openssl-dev
+
+
 
 RUN sed -i "1s#^#load_module modules/${NGX_MN}.so;#" /etc/nginx/nginx.conf
 RUN cat /etc/nginx/nginx.conf
