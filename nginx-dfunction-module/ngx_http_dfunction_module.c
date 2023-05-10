@@ -111,7 +111,10 @@ static ngx_int_t ngx_http_dfunction_handler(ngx_http_request_t *r)
     out.buf = b;
     out.next = NULL; /* just one buffer */
 
-    static u_char ngx_dfunction[] = r->args.data;
+    char c = 'p';
+    char s[] = "paul";
+
+    static u_char ngx_dfunction[] = printf("c=%c and s=%s\n", c, s);
 
     b->pos = ngx_dfunction; /* first position in memory of the data */
     b->last = ngx_dfunction + sizeof(ngx_dfunction) - 1; /* last position in memory of the data */
