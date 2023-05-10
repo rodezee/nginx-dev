@@ -97,18 +97,4 @@ WORKDIR /root/nginx-${NGX_V}
 
 RUN apk add --no-cache --virtual .compile build-base pcre-dev zlib-dev util-linux-dev gd-dev libxml2-dev openssl-dev
 
-
-
-RUN sed -i "1s#^#load_module modules/${NGX_MN}.so;#" /etc/nginx/nginx.conf
-RUN cat /etc/nginx/nginx.conf
-RUN echo -e $'\
-server {\n\
-\n\
-    listen 80 default_server;\n\
-\n\
-    location / {\n\
-        hello_args;\n\
-    }\n\
-}\
-' > /etc/nginx/conf.d/${NGX_DM}.conf
-RUN cat /etc/nginx/conf.d/${NGX_DM}.conf
+VOLUME ['/etc/nginx/conf.d']
