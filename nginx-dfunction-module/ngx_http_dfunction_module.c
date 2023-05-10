@@ -54,7 +54,7 @@ static ngx_command_t ngx_http_dfunction_commands[] = {
 };
 
 /* The hello world string. */
-static u_char ngx_dfunction[] = "hello test";
+// static u_char ngx_dfunction[] = "hello test";
 
 /* The module context. */
 static ngx_http_module_t ngx_http_dfunction_module_ctx = {
