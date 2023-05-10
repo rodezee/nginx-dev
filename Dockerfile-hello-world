@@ -1,8 +1,8 @@
 FROM nginx:1.24.0-alpine-slim
 
 ENV NGX_V=1.24.0
-ENV NGX_DM=nginx-hello-args-module
-ENV NGX_MN=ngx_http_hello_args_module
+ENV NGX_DM=nginx-hello-world-module
+ENV NGX_MN=ngx_http_hello_world_module
 ENV NJS_VERSION=0.7.12
 
 RUN set -x \
@@ -110,7 +110,7 @@ server {\n\
     listen 80 default_server;\n\
 \n\
     location / {\n\
-        hello_args;\n\
+        hello_world;\n\
     }\n\
 }\
 ' > /etc/nginx/conf.d/${NGX_DM}.conf

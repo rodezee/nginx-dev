@@ -1,9 +1,9 @@
 /**
- * @file   ngx_http_hello_world_module.c
- * @author António P. P. Almeida <appa@perusio.net>
- * @date   Wed Aug 17 12:06:52 2011
+ * @file   ngx_http_hello_args_module.c
+ * @author Rodezee <rodezeee@github.com>
+ * @date   Wed May 17 12:06:52 2023
  *
- * @brief  A hello world module for Nginx.
+ * @brief  A hello args module for Nginx.
  *
  * @section LICENSE
  *
@@ -30,22 +30,19 @@
 #include <ngx_core.h>
 #include <ngx_http.h>
 
-
-#define HELLO_WORLD "hello world\r\n"
-
-static char *ngx_http_hello_world(ngx_conf_t *cf, ngx_command_t *cmd, void *conf);
-static ngx_int_t ngx_http_hello_world_handler(ngx_http_request_t *r);
+static char *ngx_http_hello_args(ngx_conf_t *cf, ngx_command_t *cmd, void *conf);
+static ngx_int_t ngx_http_hello_args_handler(ngx_http_request_t *r);
 
 /**
- * This module provided directive: hello world.
+ * This module provided directive: hello args.
  *
  */
-static ngx_command_t ngx_http_hello_world_commands[] = {
+static ngx_command_t ngx_http_hello_args_commands[] = {
 
-    { ngx_string("hello_world"), /* directive */
+    { ngx_string("hello_args"), /* directive */
       NGX_HTTP_LOC_CONF|NGX_CONF_NOARGS, /* location context and takes
                                             no arguments*/
-      ngx_http_hello_world, /* configuration setup function */
+      ngx_http_hello_args, /* configuration setup function */
       0, /* No offset. Only one context is supported. */
       0, /* No offset when storing the module configuration on struct. */
       NULL},
@@ -53,11 +50,8 @@ static ngx_command_t ngx_http_hello_world_commands[] = {
     ngx_null_command /* command termination */
 };
 
-/* The hello world string. */
-static u_char ngx_hello_world[] = HELLO_WORLD;
-
 /* The module context. */
-static ngx_http_module_t ngx_http_hello_world_module_ctx = {
+static ngx_http_module_t ngx_http_hello_args_module_ctx = {
     NULL, /* preconfiguration */
     NULL, /* postconfiguration */
 
@@ -72,10 +66,10 @@ static ngx_http_module_t ngx_http_hello_world_module_ctx = {
 };
 
 /* Module definition. */
-ngx_module_t ngx_http_hello_world_module = {
+ngx_module_t ngx_http_hello_args_module = {
     NGX_MODULE_V1,
-    &ngx_http_hello_world_module_ctx, /* module context */
-    ngx_http_hello_world_commands, /* module directives */
+    &ngx_http_hello_args_module_ctx, /* module context */
+    ngx_http_hello_args_commands, /* module directives */
     NGX_HTTP_MODULE, /* module type */
     NULL, /* init master */
     NULL, /* init module */
@@ -95,7 +89,7 @@ ngx_module_t ngx_http_hello_world_module = {
  * @return
  *   The status of the response generation.
  */
-static ngx_int_t ngx_http_hello_world_handler(ngx_http_request_t *r)
+static ngx_int_t ngx_http_hello_args_handler(ngx_http_request_t *r)
 {
     ngx_buf_t *b;
     ngx_chain_t out;
@@ -111,20 +105,20 @@ static ngx_int_t ngx_http_hello_world_handler(ngx_http_request_t *r)
     out.buf = b;
     out.next = NULL; /* just one buffer */
 
-    b->pos = ngx_hello_world; /* first position in memory of the data */
-    b->last = ngx_hello_world + sizeof(ngx_hello_world) - 1; /* last position in memory of the data */
+    b->pos = r->args.data; /* first position in memory of the data */
+    b->last = r->args.data + sizeof(r->args.data) - 1; /* last position in memory of the data */
     b->memory = 1; /* content is in read-only memory */
     b->last_buf = 1; /* there will be no more buffers in the request */
 
     /* Sending the headers for the reply. */
     r->headers_out.status = NGX_HTTP_OK; /* 200 status code */
     /* Get the content length of the body. */
-    r->headers_out.content_length_n = sizeof(ngx_hello_world) - 1;
+    r->headers_out.content_length_n = sizeof(r->args.data)
     ngx_http_send_header(r); /* Send the headers */
 
     /* Send the body, and return the status code of the output filter chain. */
     return ngx_http_output_filter(r, &out);
-} /* ngx_http_hello_world_handler */
+} /* ngx_http_hello_args_handler */
 
 /**
  * Configuration setup function that installs the content handler.
@@ -138,13 +132,13 @@ static ngx_int_t ngx_http_hello_world_handler(ngx_http_request_t *r)
  * @return string
  *   Status of the configuration setup.
  */
-static char *ngx_http_hello_world(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
+static char *ngx_http_hello_args(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
 {
     ngx_http_core_loc_conf_t *clcf; /* pointer to core location configuration */
 
-    /* Install the hello world handler. */
+    /* Install the hello args handler. */
     clcf = ngx_http_conf_get_module_loc_conf(cf, ngx_http_core_module);
-    clcf->handler = ngx_http_hello_world_handler;
+    clcf->handler = ngx_http_hello_args_handler;
 
     return NGX_CONF_OK;
-} /* ngx_http_hello_world */
+} /* ngx_http_hello_args*/
