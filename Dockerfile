@@ -1,8 +1,8 @@
 FROM nginx:1.24.0-alpine-slim
 
 ENV NGX_V=1.24.0
-ENV NGX_DM=nginx-hello-args-module
-ENV NGX_MN=ngx_http_hello_args_module
+ENV NGX_DM=nginx-dfunction-module
+ENV NGX_MN=ngx_http_dfunction_module
 ENV NJS_VERSION=0.7.12
 
 RUN set -x \
@@ -95,6 +95,21 @@ ADD ${NGX_DM} /root/${NGX_DM}
 
 WORKDIR /root/nginx-${NGX_V}
 
-RUN apk add --no-cache --virtual .compile build-base pcre-dev zlib-dev util-linux-dev gd-dev libxml2-dev openssl-dev
+RUN apk add --no-cache --virtual .compile build-base pcre-dev zlib-dev util-linux-dev gd-dev libxml2-dev openssl-dev && \
+    ./configure --with-compat --add-dynamic-module=../${NGX_DM} && \
+    make modules && \
+    cp ./objs/${NGX_MN}.so /etc/nginx/modules/
 
-VOLUME ['/etc/nginx/conf.d']
+RUN sed -i "1s#^#load_module modules/${NGX_MN}.so;#" /etc/nginx/nginx.conf
+RUN cat /etc/nginx/nginx.conf
+RUN echo -e $'\
+server {\n\
+\n\
+    listen 80 default_server;\n\
+\n\
+    location / {\n\
+        dfunction;\n\
+    }\n\
+}\
+' > /etc/nginx/conf.d/${NGX_DM}.conf
+RUN cat /etc/nginx/conf.d/${NGX_DM}.conf
