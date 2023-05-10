@@ -25,4 +25,6 @@ EOF
 
 docker compose cp ./conf.d/${NGX_DR}.conf nginx:/etc/nginx/conf.d/
 
+#docker compose exec -it nginx sed -i "1s#^#load_module modules/${NGX_MN}.so;#" /etc/nginx/nginx.conf
+
 docker compose exec -it nginx nginx -s reload
