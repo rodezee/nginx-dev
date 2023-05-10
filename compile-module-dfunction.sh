@@ -7,7 +7,7 @@ NGX_DM=nginx-dfunction-module
 NGX_MN=ngx_http_dfunction_module
 NGX_DR=dfunction
 
-# docker compose exec -it nginx ./configure --with-compat --add-dynamic-module=../${NGX_DM}
+docker compose exec -it nginx ./configure --with-compat --add-dynamic-module=../${NGX_DM}
 
 docker compose exec -it nginx make modules
 
