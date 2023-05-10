@@ -2,6 +2,7 @@
 
 set -euxo pipefail
 
+NGX_V=1.24.0
 NGX_DM=nginx-hello-world-module
 NGX_MN=ngx_http_hello_world_module
 NGX_DR=hello_world
