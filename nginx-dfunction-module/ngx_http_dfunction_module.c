@@ -54,7 +54,7 @@ static ngx_command_t ngx_http_dfunction_commands[] = {
 };
 
 /* The hello world string. */
-static u_char ngx_dfunction[] = DFUNCTION;
+static u_char ngx_dfunction[] = "hello test";
 
 /* The module context. */
 static ngx_http_module_t ngx_http_dfunction_module_ctx = {
@@ -110,8 +110,6 @@ static ngx_int_t ngx_http_dfunction_handler(ngx_http_request_t *r)
     /* Insertion in the buffer chain. */
     out.buf = b;
     out.next = NULL; /* just one buffer */
-
-    ngx_dfunction[] = "hello test";
 
     b->pos = ngx_dfunction; /* first position in memory of the data */
     b->last = ngx_dfunction + sizeof(ngx_dfunction) - 1; /* last position in memory of the data */
