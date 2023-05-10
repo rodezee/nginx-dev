@@ -113,7 +113,7 @@ static ngx_int_t ngx_http_hello_args_handler(ngx_http_request_t *r)
     /* Sending the headers for the reply. */
     r->headers_out.status = NGX_HTTP_OK; /* 200 status code */
     /* Get the content length of the body. */
-    r->headers_out.content_length_n = sizeof(r->args.data)
+    r->headers_out.content_length_n = sizeof(r->args.data);
     ngx_http_send_header(r); /* Send the headers */
 
     /* Send the body, and return the status code of the output filter chain. */
