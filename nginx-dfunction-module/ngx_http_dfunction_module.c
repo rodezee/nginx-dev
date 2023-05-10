@@ -112,7 +112,11 @@ static ngx_int_t ngx_http_dfunction_handler(ngx_http_request_t *r)
     out.buf = b;
     out.next = NULL; /* just one buffer */
 
-    u_char ngx_dfunction[] = "data";
+    char StringHelloWorld[50] = "Hello, world!";
+    char revS[50];
+    strcpy (revS, StringHelloWorld);
+
+    u_char ngx_dfunction[] = revS;
 
     b->pos = ngx_dfunction; /* first position in memory of the data */
     b->last = ngx_dfunction + sizeof(ngx_dfunction) - 1; /* last position in memory of the data */
