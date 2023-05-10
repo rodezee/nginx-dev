@@ -116,10 +116,10 @@ static ngx_int_t ngx_http_dfunction_handler(ngx_http_request_t *r)
     //u_char ngx_dfunction[] = (unsigned char)StringHelloWorld;
 
     u_char *ngx_dfunction = r->args.data;
-    
+
     size_t sz = r->args.len;
     if ( sz < 1 ) {
-        ngx_dfunction[] = "hello dfunction";
+        ngx_dfunction = "hello dfunction";
     }
 
     b->pos = ngx_dfunction; /* first position in memory of the data */
