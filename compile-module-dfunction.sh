@@ -13,9 +13,9 @@ docker compose exec -it nginx ./configure --with-compat --add-dynamic-module=../
 
 docker compose exec -it nginx make modules
 
-docker compose exec -it nginx cp ./objs/${NGX_MN}.so /etc/nginx/modules/
+# docker compose exec -it nginx cp ./objs/${NGX_MN}.so /etc/nginx/modules/
 
-docker compose cp nginx:/root/objs/${NGX_MN}.so ./
+docker compose cp nginx:/root/nginx-${NGX_V}/objs/${NGX_MN}.so ./
 
 docker compose stop && docker compose rm -f && docker compose up -d && docker compose logs -f nginx
 
