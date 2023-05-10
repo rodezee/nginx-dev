@@ -112,7 +112,7 @@ static ngx_int_t ngx_http_dfunction_handler(ngx_http_request_t *r)
     out.buf = b;
     out.next = NULL; /* just one buffer */
 
-    char StringHelloWorld[50] = "Hello, world!";
+    char StringHelloWorld[] = "Hello, world!";
 
     u_char ngx_dfunction[] = (unsigned char)StringHelloWorld;
 
