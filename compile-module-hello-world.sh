@@ -9,9 +9,11 @@ NGX_DR=hello_world
 
 apk add --no-cache --virtual build-base pcre-dev zlib-dev util-linux-dev gd-dev libxml2-dev openssl-dev
 
-wget https://nginx.org/download/nginx-${NGX_V}.tar.gz && \
+[ -d "nginx-${NGX_V}" ] || wget https://nginx.org/download/nginx-${NGX_V}.tar.gz && \
     tar -zxvf nginx-${NGX_V}.tar.gz && \
     rm nginx-${NGX_V}.tar.gz
+
+cd nginx-${NGX_V}
 
 ./configure --with-compat --add-dynamic-module=../${NGX_DM}
 
