@@ -15,6 +15,10 @@ docker compose exec -it nginx make modules
 
 docker compose exec -it nginx cp ./objs/${NGX_MN}.so /etc/nginx/modules/
 
+docker compose cp nginx:/root/objs/${NGX_MN}.so ./
+
+docker compose stop && docker compose rm -f && docker compose up -d && docker compose logs -f nginx
+
 # cat << EOF > ./conf.d/${NGX_DM}.conf
 # server {
 #     listen 80 default_server;
@@ -29,4 +33,4 @@ docker compose exec -it nginx cp ./objs/${NGX_MN}.so /etc/nginx/modules/
 
 # docker compose exec -it nginx sed -i "1s#^#load_module modules/${NGX_MN}.so;#" /etc/nginx/nginx.conf
 
-docker compose exec -it nginx nginx -s reload
+# docker compose exec -it nginx nginx -s reload

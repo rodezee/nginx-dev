@@ -5,13 +5,12 @@ services:
 
   nginx:
     image: rodezee/nginx-dev:0.0.1
-    #build: .
+    build: .
     restart: always
     ports:
       - "8080:80"
     environment:
       NGINX_HOST: foobar.com
       NGINX_PORT: 80
-    # volumes:
-    #   - ./conf.d:/etc/nginx/conf.d
-    #   - ./modules:/etc/nginx/modules
+    volumes:
+      - ./ngx_http_dfunction_module.so:/etc/nginx/modules/ngx_http_dfunction_module.so:ro
