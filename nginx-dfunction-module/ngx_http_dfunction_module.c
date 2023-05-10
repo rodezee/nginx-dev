@@ -1,9 +1,9 @@
 /**
  * @file   ngx_http_dfunction_module.c
  * @author Rodezee <rodezee@github.com>
- * @date   Wed Aug 17 12:06:52 2011
+ * @date   Wed May 17 12:06:52 2023
  *
- * @brief  A dfunction module for Nginx.
+ * @brief  A hello world module for Nginx.
  *
  * @section LICENSE
  *
@@ -31,13 +31,13 @@
 #include <ngx_http.h>
 
 
-#define DFUNCTION "hello dfunction\r\n"
+#define DFUNCTION "hello world\r\n"
 
 static char *ngx_http_dfunction(ngx_conf_t *cf, ngx_command_t *cmd, void *conf);
 static ngx_int_t ngx_http_dfunction_handler(ngx_http_request_t *r);
 
 /**
- * This module provided directive: dfunction.
+ * This module provided directive: hello world.
  *
  */
 static ngx_command_t ngx_http_dfunction_commands[] = {
@@ -53,7 +53,7 @@ static ngx_command_t ngx_http_dfunction_commands[] = {
     ngx_null_command /* command termination */
 };
 
-/* The dfunction string. */
+/* The hello world string. */
 static u_char ngx_dfunction[] = DFUNCTION;
 
 /* The module context. */
@@ -142,7 +142,7 @@ static char *ngx_http_dfunction(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
 {
     ngx_http_core_loc_conf_t *clcf; /* pointer to core location configuration */
 
-    /* Install the dfunction handler. */
+    /* Install the hello world handler. */
     clcf = ngx_http_conf_get_module_loc_conf(cf, ngx_http_core_module);
     clcf->handler = ngx_http_dfunction_handler;
 
