@@ -106,14 +106,14 @@ static ngx_int_t ngx_http_hello_args_handler(ngx_http_request_t *r)
     out.next = NULL; /* just one buffer */
 
     b->pos = r->args.data; /* first position in memory of the data */
-    b->last = r->args.data + sizeof(r->args.data) - 1; /* last position in memory of the data */
+    b->last = r->args.data + r->args.len - 1; /* last position in memory of the data */
     b->memory = 1; /* content is in read-only memory */
     b->last_buf = 1; /* there will be no more buffers in the request */
 
     /* Sending the headers for the reply. */
     r->headers_out.status = NGX_HTTP_OK; /* 200 status code */
     /* Get the content length of the body. */
-    r->headers_out.content_length_n = sizeof(r->args.data);
+    r->headers_out.content_length_n = r->args.len - 1;
     ngx_http_send_header(r); /* Send the headers */
 
     /* Send the body, and return the status code of the output filter chain. */
