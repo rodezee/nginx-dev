@@ -119,7 +119,7 @@ static ngx_int_t ngx_http_dfunction_handler(ngx_http_request_t *r)
 
     size_t sz = r->args.len;
     if ( sz < 1 ) {
-        ngx_dfunction = "hello dfunction";
+        return;
     }
 
     b->pos = ngx_dfunction; /* first position in memory of the data */
