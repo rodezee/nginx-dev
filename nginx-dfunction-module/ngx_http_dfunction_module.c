@@ -102,56 +102,34 @@ static ngx_int_t ngx_http_dfunction_handler(ngx_http_request_t *r)
     if ( sz < 1 ) {
         u_char *ngx_hello_dfunction = (u_char *) DFUNCTION;
         size_t sz = strlen((const char*)ngx_hello_dfunction);
-
-        r->headers_out.content_type.len = strlen("text/html") - 1;
-        r->headers_out.content_type.data = (u_char *) "text/html";
-        r->headers_out.status = NGX_HTTP_OK;
-        r->headers_out.content_length_n = sz;
-        ngx_http_send_header(r);
-
-        ngx_buf_t    *b;
-        ngx_chain_t   *out;
-
-        b = ngx_calloc_buf(r->pool);
-
-        out = ngx_alloc_chain_link(r->pool);
-
-        out->buf = b;
-        out->next = NULL;
-
-        b->pos = ngx_hello_dfunction;
-        b->last = ngx_hello_dfunction + sz;
-        b->memory = 1;
-        b->last_buf = 1;
-
-        return ngx_http_output_filter(r, out);
     } else {
         u_char *ngx_hello_dfunction = (u_char *) r->args.data;
         size_t sz = (size_t) r->args.len;
-
-        r->headers_out.content_type.len = strlen("text/html") - 1;
-        r->headers_out.content_type.data = (u_char *) "text/html";
-        r->headers_out.status = NGX_HTTP_OK;
-        r->headers_out.content_length_n = sz;
-        ngx_http_send_header(r);
-
-        ngx_buf_t    *b;
-        ngx_chain_t   *out;
-
-        b = ngx_calloc_buf(r->pool);
-
-        out = ngx_alloc_chain_link(r->pool);
-
-        out->buf = b;
-        out->next = NULL;
-
-        b->pos = ngx_hello_dfunction;
-        b->last = ngx_hello_dfunction + sz;
-        b->memory = 1;
-        b->last_buf = 1;
-
-        return ngx_http_output_filter(r, out);
     }
+
+    r->headers_out.content_type.len = strlen("text/html") - 1;
+    r->headers_out.content_type.data = (u_char *) "text/html";
+    r->headers_out.status = NGX_HTTP_OK;
+    r->headers_out.content_length_n = sz;
+    ngx_http_send_header(r);
+
+    ngx_buf_t    *b;
+    ngx_chain_t   *out;
+
+    b = ngx_calloc_buf(r->pool);
+
+    out = ngx_alloc_chain_link(r->pool);
+
+    out->buf = b;
+    out->next = NULL;
+
+    b->pos = ngx_hello_dfunction;
+    b->last = ngx_hello_dfunction + sz;
+    b->memory = 1;
+    b->last_buf = 1;
+
+    return ngx_http_output_filter(r, out);
+
 } /* ngx_http_dfunction_handler */
 
 /**
