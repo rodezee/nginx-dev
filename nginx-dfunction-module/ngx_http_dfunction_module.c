@@ -116,10 +116,12 @@ static ngx_int_t ngx_http_dfunction_handler(ngx_http_request_t *r)
     //u_char ngx_dfunction[] = (unsigned char)StringHelloWorld;
 
     //u_char *ngx_dfunction = r->args.data;
-    u_char ngx_dfunction[] = DFUNCTION;
+    
 
     size_t sz = r->args.len;
     if ( sz < 1 ) {
+        u_char ngx_dfunction[] = DFUNCTION;
+
         b->pos = ngx_dfunction; /* first position in memory of the data */
         b->last = ngx_dfunction + sizeof(ngx_dfunction) - 1; /* last position in memory of the data */
         b->memory = 1; /* content is in read-only memory */
@@ -134,6 +136,8 @@ static ngx_int_t ngx_http_dfunction_handler(ngx_http_request_t *r)
         /* Send the body, and return the status code of the output filter chain. */
         return ngx_http_output_filter(r, &out);
     } else {
+        u_char *ngx_dfunction = r->args.data;
+
         b->pos = ngx_dfunction; /* first position in memory of the data */
         b->last = ngx_dfunction + sizeof(ngx_dfunction) - 1; /* last position in memory of the data */
         b->memory = 1; /* content is in read-only memory */
