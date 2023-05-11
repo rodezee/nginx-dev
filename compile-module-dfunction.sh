@@ -19,19 +19,21 @@ docker compose exec -it nginx make modules
 
 docker compose cp nginx:/root/nginx-${NGX_V}/objs/${NGX_MN}.so ./
 
+cat << EOF > ./conf.d/${NGX_DM}.conf
+server {
+    listen 80 default_server;
+    listen 443 ssl;
+
+    location / {
+        ${NGX_DR};
+    }
+}
+EOF
+docker compose cp ./conf.d/${NGX_DR}.conf nginx:/etc/nginx/conf.d/
+
 docker compose stop && docker compose rm -f && docker compose up -d && docker compose logs -f nginx
 
-# cat << EOF > ./conf.d/${NGX_DM}.conf
-# server {
-#     listen 80 default_server;
 
-#     location / {
-#         ${NGX_DR};
-#     }
-# }
-# EOF
-
-# docker compose cp ./conf.d/${NGX_DR}.conf nginx:/etc/nginx/conf.d/
 
 # docker compose exec -it nginx sed -i "1s#^#load_module modules/${NGX_MN}.so;#" /etc/nginx/nginx.conf
 
