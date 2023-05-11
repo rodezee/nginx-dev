@@ -18,4 +18,4 @@ openssl req -new -key key.pem -out cert.csr -subj "/C=GB/ST=GB/L=London/O=UK Tra
 # Generating self-signed certificate
 openssl x509 -req -days 3650 -in cert.csr -signkey key.pem -out cert.pem
 
-chown nginx:nignx /etc/ssl/key.pem /etc/ssl/cert.pem
+chown nginx:nginx /etc/ssl/key.pem /etc/ssl/cert.pem
