@@ -7,6 +7,9 @@ NGX_DM=nginx-dfunction-module
 NGX_MN=ngx_http_dfunction_module
 NGX_DR=dfunction
 
+# generate certificates if needed
+docker compose exec -it nginx /root/generate-certs.sh
+
 # create the nginx.conf including the load of the .so file (see docker-compose.yml for mount in nignx container)
 cat << EOF > ./nginx.conf
 load_module modules/ngx_http_${NGX_DR}_module.so;
@@ -47,8 +50,8 @@ server {
     listen 80 default_server;
     listen 443 ssl;
 
-    ssl_certificate /etc/ssl/certs/ca-certificates.crt;
-    ssl_certificate_key  /etc/ssl/certs/ca-certificates.key;
+    ssl_certificate /etc/ssl/cert.pem;
+    ssl_certificate_key  /etc/ssl/key.pem;
 
     location / {
         ${NGX_DR};
