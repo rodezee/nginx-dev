@@ -91,7 +91,7 @@ RUN wget https://nginx.org/download/nginx-${NGX_V}.tar.gz && \
     tar -zxvf nginx-${NGX_V}.tar.gz && \
     rm nginx-${NGX_V}.tar.gz
 
-ADD ${NGX_DM} /root/${NGX_DM}
+#ADD ${NGX_DM} /root/${NGX_DM}
 
 WORKDIR /root/nginx-${NGX_V}
 
