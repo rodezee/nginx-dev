@@ -120,8 +120,15 @@ static ngx_int_t ngx_http_dfunction_handler(ngx_http_request_t *r)
 
     size_t sz = r->args.len;
     if ( sz < 1 ) {
+        /* Sending the headers for the reply. */
+        r->headers_out.status = NGX_HTTP_OK; /* 200 status code */
+        /* Get the content length of the body. */
+        r->headers_out.content_length_n = sizeof(ngx_dfunction) - 1;
+        ngx_http_send_header(r); /* Send the headers */
+
+        /* Send the body, and return the status code of the output filter chain. */
         return ngx_http_output_filter(r, &out);
-    }
+    } /* else .. */
 
     b->pos = ngx_dfunction; /* first position in memory of the data */
     b->last = ngx_dfunction + sizeof(ngx_dfunction) - 1; /* last position in memory of the data */
