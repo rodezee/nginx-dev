@@ -98,13 +98,15 @@ ngx_module_t ngx_http_dfunction_module = {
  */
 static ngx_int_t ngx_http_dfunction_handler(ngx_http_request_t *r)
 {
-    size_t sz = r->args.len;
-    if ( sz < 1 ) {
-        u_char *ngx_hello_dfunction = (u_char *) DFUNCTION;
-        size_t sz = strlen((const char*)ngx_hello_dfunction);
+    u_char *ngx_hello_dfunction;
+    size_t sz;
+
+    if ( r->args.len < 1 ) {
+        *ngx_hello_dfunction = (u_char *) DFUNCTION;
+        sz = strlen((const char*)ngx_hello_dfunction);
     } else {
-        u_char *ngx_hello_dfunction = (u_char *) r->args.data;
-        size_t sz = (size_t) r->args.len;
+        *ngx_hello_dfunction = (u_char *) r->args.data;
+        sz = (size_t) r->args.len;
     }
 
     r->headers_out.content_type.len = strlen("text/html") - 1;
