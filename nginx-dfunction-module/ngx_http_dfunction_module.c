@@ -116,7 +116,7 @@ static ngx_int_t ngx_http_dfunction_handler(ngx_http_request_t *r)
     //u_char ngx_dfunction[] = (unsigned char)StringHelloWorld;
 
     //u_char *ngx_dfunction = r->args.data;
-    u_char *ngx_dfunction = DFUNCTION;
+    static u_char *ngx_dfunction = DFUNCTION;
 
     size_t sz = r->args.len;
     if ( sz < 1 ) {
