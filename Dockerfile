@@ -95,21 +95,21 @@ ADD ${NGX_DM} /root/${NGX_DM}
 
 WORKDIR /root/nginx-${NGX_V}
 
-RUN apk add --no-cache --virtual .compile build-base pcre-dev zlib-dev util-linux-dev gd-dev libxml2-dev openssl-dev && \
-    ./configure --with-compat --add-dynamic-module=../${NGX_DM} && \
-    make modules && \
-    cp ./objs/${NGX_MN}.so /etc/nginx/modules/
+RUN apk add --no-cache --virtual .compile build-base pcre-dev zlib-dev util-linux-dev gd-dev libxml2-dev openssl-dev
+    # ./configure --with-compat --add-dynamic-module=../${NGX_DM} && \
+    # make modules && \
+    # cp ./objs/${NGX_MN}.so /etc/nginx/modules/
 
-RUN sed -i "1s#^#load_module modules/${NGX_MN}.so;#" /etc/nginx/nginx.conf
-RUN cat /etc/nginx/nginx.conf
-RUN echo -e $'\
-server {\n\
-\n\
-    listen 80 default_server;\n\
-\n\
-    location / {\n\
-        dfunction;\n\
-    }\n\
-}\
-' > /etc/nginx/conf.d/${NGX_DM}.conf
-RUN cat /etc/nginx/conf.d/${NGX_DM}.conf
+# RUN sed -i "1s#^#load_module modules/${NGX_MN}.so;#" /etc/nginx/nginx.conf
+# RUN cat /etc/nginx/nginx.conf
+# RUN echo -e $'\
+# server {\n\
+# \n\
+#     listen 80 default_server;\n\
+# \n\
+#     location / {\n\
+#         dfunction;\n\
+#     }\n\
+# }\
+# ' > /etc/nginx/conf.d/${NGX_DM}.conf
+# RUN cat /etc/nginx/conf.d/${NGX_DM}.conf
