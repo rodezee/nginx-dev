@@ -63,10 +63,10 @@ docker compose up -d
 docker compose exec -it nginx /root/generate-certs.sh
 
 # copy code of module to the container
-docker compose cp ./${NGX_DM} nginx:/root/${NGX_DM}
+# docker compose cp ./${NGX_DM} nginx:/root/${NGX_DM}
 
 # configure the module
-docker compose exec -it nginx ./configure --with-compat --add-dynamic-module=../${NGX_DM}
+#docker compose exec -it nginx ./configure --with-compat --add-dynamic-module=../${NGX_DM}
 
 # build the module
 docker compose exec -it nginx make modules
@@ -76,7 +76,3 @@ docker compose cp nginx:/root/nginx-${NGX_V}/objs/${NGX_MN}.so ./
 
 # restart the container (see docker-compose.yml for the mount of the current folder .so file)
 docker compose stop && docker compose rm -f && docker compose up -d && docker compose logs -f nginx
-
-
-# # reload nginx within the container and follow it's logs
-# docker compose exec -it nginx nginx -s reload && docker compose logs -f nginx
