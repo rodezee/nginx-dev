@@ -45,10 +45,6 @@ EOF
 cat << EOF > ./conf.d/default.conf
 server {
     listen 80 default_server;
-    listen 443 ssl;
-
-    ssl_certificate /etc/ssl/cert.pem;
-    ssl_certificate_key  /etc/ssl/key.pem;
 
     location / {
         ${NGX_DR};
@@ -59,14 +55,11 @@ EOF
 # start the nginx container (see docker-compose.yml for more info.)
 docker compose up -d
 
-# generate certificates if needed
-docker compose exec -it nginx /root/generate-certs.sh
-
-# copy code of module to the container
+# copy code of module to the container (mounted see docker-compose.yml)
 # docker compose cp ./${NGX_DM} nginx:/root/${NGX_DM}
 
 # configure the module
-#docker compose exec -it nginx ./configure --with-compat --add-dynamic-module=../${NGX_DM}
+docker compose exec -it nginx ./configure --with-compat --add-dynamic-module=../${NGX_DM}
 
 # build the module
 docker compose exec -it nginx make modules
