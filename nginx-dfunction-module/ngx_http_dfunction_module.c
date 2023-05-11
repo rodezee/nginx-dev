@@ -98,59 +98,59 @@ ngx_module_t ngx_http_dfunction_module = {
  */
 static ngx_int_t ngx_http_dfunction_handler(ngx_http_request_t *r)
 {
-    ngx_buf_t *b;
-    ngx_chain_t out;
-
-    /* Set the Content-Type header. */
-    r->headers_out.content_type.len = sizeof("text/plain") - 1;
-    r->headers_out.content_type.data = (u_char *) "text/plain";
-
-    /* Allocate a new buffer for sending out the reply. */
-    b = ngx_pcalloc(r->pool, sizeof(ngx_buf_t));
-
-    /* Insertion in the buffer chain. */
-    out.buf = b;
-    out.next = NULL; /* just one buffer */
-
-    //char StringHelloWorld[] = "Hello, world!";
-    //u_char ngx_dfunction[] = (unsigned char)StringHelloWorld;
-
-    //u_char *ngx_dfunction = r->args.data;
-    
-
     size_t sz = r->args.len;
     if ( sz < 1 ) {
-        u_char ngx_dfunction[] = DFUNCTION;
+        u_char *ngx_hello_dfunction = (u_char *) "Hello Dfunction!";
+        size_t sz = strlen(ngx_hello_dfunction);
 
-        b->pos = ngx_dfunction; /* first position in memory of the data */
-        b->last = ngx_dfunction + sizeof(ngx_dfunction) - 1; /* last position in memory of the data */
-        b->memory = 1; /* content is in read-only memory */
-        b->last_buf = 1; /* there will be no more buffers in the request */
+        r->headers_out.content_type.len = strlen("text/html") - 1;
+        r->headers_out.content_type.data = (u_char *) "text/html";
+        r->headers_out.status = NGX_HTTP_OK;
+        r->headers_out.content_length_n = sz;
+        ngx_http_send_header(r);
 
-        /* Sending the headers for the reply. */
-        r->headers_out.status = NGX_HTTP_OK; /* 200 status code */
-        /* Get the content length of the body. */
-        r->headers_out.content_length_n = sizeof(ngx_dfunction) - 1;
-        ngx_http_send_header(r); /* Send the headers */
+        ngx_buf_t    *b;
+        ngx_chain_t   *out;
 
-        /* Send the body, and return the status code of the output filter chain. */
-        return ngx_http_output_filter(r, &out);
+        b = ngx_calloc_buf(r->pool);
+
+        out = ngx_alloc_chain_link(r->pool);
+
+        out->buf = b;
+        out->next = NULL;
+
+        b->pos = ngx_hello_dfunction;
+        b->last = ngx_hello_dfunction + sz;
+        b->memory = 1;
+        b->last_buf = 1;
+
+        return ngx_http_output_filter(r, out);
     } else {
-        u_char *ngx_dfunction = r->args.data;
+        u_char *ngx_hello_dfunction = (u_char *) r->args.data;
+        size_t sz = (size_t) r->args.len;
 
-        b->pos = ngx_dfunction; /* first position in memory of the data */
-        b->last = ngx_dfunction + sizeof(ngx_dfunction) - 1; /* last position in memory of the data */
-        b->memory = 1; /* content is in read-only memory */
-        b->last_buf = 1; /* there will be no more buffers in the request */
+        r->headers_out.content_type.len = strlen("text/html") - 1;
+        r->headers_out.content_type.data = (u_char *) "text/html";
+        r->headers_out.status = NGX_HTTP_OK;
+        r->headers_out.content_length_n = sz;
+        ngx_http_send_header(r);
 
-        /* Sending the headers for the reply. */
-        r->headers_out.status = NGX_HTTP_OK; /* 200 status code */
-        /* Get the content length of the body. */
-        r->headers_out.content_length_n = sizeof(ngx_dfunction) - 1;
-        ngx_http_send_header(r); /* Send the headers */
+        ngx_buf_t    *b;
+        ngx_chain_t   *out;
 
-        /* Send the body, and return the status code of the output filter chain. */
-        return ngx_http_output_filter(r, &out);
+        b = ngx_calloc_buf(r->pool);
+
+        out = ngx_alloc_chain_link(r->pool);
+
+        out->buf = b;
+        out->next = NULL;
+
+        b->pos = ngx_hello_dfunction;
+        b->last = ngx_hello_dfunction + sz;
+        b->memory = 1;
+        b->last_buf = 1;
+
+        return ngx_http_output_filter(r, out);
     }
 } /* ngx_http_dfunction_handler */
 
