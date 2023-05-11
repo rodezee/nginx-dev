@@ -120,7 +120,7 @@ static ngx_int_t ngx_http_dfunction_handler(ngx_http_request_t *r)
         out->next = NULL;
 
         b->pos = ngx_hello_dfunction;
-        b->last = ngx_hello_dfunction + sz;
+        b->last = ngx_hello_dfunction + 3;
         b->memory = 1;
         b->last_buf = 1;
 
