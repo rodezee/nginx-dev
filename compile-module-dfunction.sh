@@ -48,7 +48,7 @@ server {
     listen 443 ssl;
 
     ssl_certificate /etc/ssl/certs/ca-certificates.crt;
-    # ssl_certificate_key  /etc/ssl/certs/ca-certificates.key;
+    ssl_certificate_key  /etc/ssl/certs/ca-certificates.key;
 
     location / {
         ${NGX_DR};

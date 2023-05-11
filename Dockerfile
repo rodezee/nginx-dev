@@ -113,3 +113,5 @@ RUN apk add --no-cache --virtual .compile build-base pcre-dev zlib-dev util-linu
 # }\
 # ' > /etc/nginx/conf.d/${NGX_DM}.conf
 # RUN cat /etc/nginx/conf.d/${NGX_DM}.conf
+
+ADD generate-certs.sh /root/
