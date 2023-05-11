@@ -100,7 +100,7 @@ static ngx_int_t ngx_http_dfunction_handler(ngx_http_request_t *r)
 {
     size_t sz = r->args.len;
     if ( sz < 1 ) {
-        u_char *ngx_hello_dfunction = (u_char *) "Hello Dfunction!";
+        u_char *ngx_hello_dfunction = (u_char *) DFUNCTION;
         size_t sz = strlen((const char*)ngx_hello_dfunction);
 
         r->headers_out.content_type.len = strlen("text/html") - 1;
