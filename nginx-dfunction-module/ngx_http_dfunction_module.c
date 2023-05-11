@@ -120,6 +120,11 @@ static ngx_int_t ngx_http_dfunction_handler(ngx_http_request_t *r)
 
     size_t sz = r->args.len;
     if ( sz < 1 ) {
+        b->pos = ngx_dfunction; /* first position in memory of the data */
+        b->last = ngx_dfunction + sizeof(ngx_dfunction) - 1; /* last position in memory of the data */
+        b->memory = 1; /* content is in read-only memory */
+        b->last_buf = 1; /* there will be no more buffers in the request */
+
         /* Sending the headers for the reply. */
         r->headers_out.status = NGX_HTTP_OK; /* 200 status code */
         /* Get the content length of the body. */
