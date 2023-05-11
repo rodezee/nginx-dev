@@ -116,7 +116,7 @@ static ngx_int_t ngx_http_dfunction_handler(ngx_http_request_t *r)
     //u_char ngx_dfunction[] = (unsigned char)StringHelloWorld;
 
     //u_char *ngx_dfunction = r->args.data;
-    static u_char ngx_dfunction[] = DFUNCTION;
+    u_char ngx_dfunction[] = DFUNCTION;
 
     size_t sz = r->args.len;
     if ( sz < 1 ) {
@@ -133,21 +133,21 @@ static ngx_int_t ngx_http_dfunction_handler(ngx_http_request_t *r)
 
         /* Send the body, and return the status code of the output filter chain. */
         return ngx_http_output_filter(r, &out);
-    } /* else .. */
+    } else {
+        b->pos = ngx_dfunction; /* first position in memory of the data */
+        b->last = ngx_dfunction + sizeof(ngx_dfunction) - 1; /* last position in memory of the data */
+        b->memory = 1; /* content is in read-only memory */
+        b->last_buf = 1; /* there will be no more buffers in the request */
 
-    b->pos = ngx_dfunction; /* first position in memory of the data */
-    b->last = ngx_dfunction + sizeof(ngx_dfunction) - 1; /* last position in memory of the data */
-    b->memory = 1; /* content is in read-only memory */
-    b->last_buf = 1; /* there will be no more buffers in the request */
+        /* Sending the headers for the reply. */
+        r->headers_out.status = NGX_HTTP_OK; /* 200 status code */
+        /* Get the content length of the body. */
+        r->headers_out.content_length_n = sizeof(ngx_dfunction) - 1;
+        ngx_http_send_header(r); /* Send the headers */
 
-    /* Sending the headers for the reply. */
-    r->headers_out.status = NGX_HTTP_OK; /* 200 status code */
-    /* Get the content length of the body. */
-    r->headers_out.content_length_n = sizeof(ngx_dfunction) - 1;
-    ngx_http_send_header(r); /* Send the headers */
-
-    /* Send the body, and return the status code of the output filter chain. */
-    return ngx_http_output_filter(r, &out);
+        /* Send the body, and return the status code of the output filter chain. */
+        return ngx_http_output_filter(r, &out);
+    }
 } /* ngx_http_dfunction_handler */
 
 /**
