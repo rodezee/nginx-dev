@@ -45,10 +45,10 @@ EOF
 cat << EOF > ./conf.d/default.conf
 server {
     listen 80 default_server;
-    # listen 443 ssl;
+    listen 443 ssl;
 
-    # ssl_certificate /etc/nginx/certs/default.crt;
-    # ssl_certificate_key /etc/nginx/certs/default.key;
+    ssl_certificate /etc/ssl/certs/ca-certificates.crt;
+    # ssl_certificate_key  /etc/ssl/certs/ca-certificates.key;
 
     location / {
         ${NGX_DR};
