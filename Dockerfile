@@ -95,7 +95,7 @@ RUN wget https://nginx.org/download/nginx-${NGX_V}.tar.gz && \
 
 WORKDIR /root/nginx-${NGX_V}
 
-RUN apk add --no-cache --virtual .compile build-base pcre-dev zlib-dev util-linux-dev gd-dev libxml2-dev openssl-dev
+RUN apk add --no-cache --virtual .compile build-base pcre-dev zlib-dev util-linux-dev gd-dev libxml2-dev openssl-dev openssl
     # ./configure --with-compat --add-dynamic-module=../${NGX_DM} && \
     # make modules && \
     # cp ./objs/${NGX_MN}.so /etc/nginx/modules/
