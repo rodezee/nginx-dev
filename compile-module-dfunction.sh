@@ -66,7 +66,7 @@ docker compose exec -it nginx /root/generate-certs.sh
 docker compose cp ./${NGX_DM} nginx:/root/${NGX_DM}
 
 # configure the module
-docker compose exec -it nginx ./configure --with-compat --add-dynamic-module=../${NGX_DM}
+#docker compose exec -it nginx ./configure --with-compat --add-dynamic-module=../${NGX_DM}
 
 # build the module
 docker compose exec -it nginx make modules
