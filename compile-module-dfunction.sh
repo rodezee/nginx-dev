@@ -47,6 +47,9 @@ server {
     listen 80 default_server;
     listen 443 ssl;
 
+    ssl_certificate /etc/nginx/certs/default.crt;
+    ssl_certificate_key /etc/nginx/certs/default.key;
+
     location / {
         ${NGX_DR};
     }
