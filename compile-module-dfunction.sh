@@ -11,7 +11,7 @@ docker compose up -d
 
 docker compose cp ./${NGX_DM}/${NGX_MN}.c nginx:/root/${NGX_DM}/
 
-docker compose exec -it nginx ./configure --with-compat --add-dynamic-module=../${NGX_DM}
+#docker compose exec -it nginx ./configure --with-compat --add-dynamic-module=../${NGX_DM}
 
 docker compose exec -it nginx make modules
 
