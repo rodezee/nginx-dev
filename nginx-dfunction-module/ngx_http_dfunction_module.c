@@ -103,7 +103,7 @@ static ngx_int_t ngx_http_dfunction_handler(ngx_http_request_t *r)
 
     // if ( r->args.len < 1 ) {
         u_char *ngx_hello_dfunction = (u_char *) DFUNCTION;
-        size_t = strlen((const char*)ngx_hello_dfunction);
+        size_t sz = strlen((const char*)ngx_hello_dfunction);
     // } else {
     //     *ngx_hello_dfunction = (u_char *) r->args.data;
     //     sz = (size_t) r->args.len;
