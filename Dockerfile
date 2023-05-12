@@ -121,7 +121,8 @@ RUN cat /etc/nginx/conf.d/${NGX_MOD_DIRNAME}.conf
 #     ./configure --with-compat --add-dynamic-module=../${NGX_MOD_DIRNAME} && rm /root/${NGX_MOD_FILENAME}.reconfigure || true
 ADD ${NGX_MOD_DIRNAME} /root/${NGX_MOD_DIRNAME}
 ARG RECONFIGURE=false
-RUN test "$RECONFIGURE" && ./configure --with-compat --add-dynamic-module=../${NGX_MOD_DIRNAME} || true
+ENV RECONFIGURE=${RECONFIGURE}
+RUN [ "$RECONFIGURE" = true ]  && ./configure --with-compat --add-dynamic-module=../${NGX_MOD_DIRNAME} || true
 
 RUN make modules && \
     cp ./objs/${NGX_MOD_FILENAME}.so /etc/nginx/modules/
