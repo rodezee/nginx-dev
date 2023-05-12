@@ -32,7 +32,7 @@
 /* #include <stdio.h> */
 
 
-#define DFUNCTION "hello dfunction\r\n"
+#define DFUNCTION "hello dfunction world\r\n"
 
 static char *ngx_http_dfunction(ngx_conf_t *cf, ngx_command_t *cmd, void *conf);
 static ngx_int_t ngx_http_dfunction_handler(ngx_http_request_t *r);
