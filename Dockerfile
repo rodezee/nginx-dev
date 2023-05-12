@@ -116,6 +116,7 @@ RUN cat /etc/nginx/conf.d/${NGX_MOD_DIRNAME}.conf
 # do reconfigure only on new module
 RUN [ -d "/root/${NGX_MOD_DIRNAME}" ] || touch /root/${NGX_MOD_FILENAME}.reconfigure
 ADD ${NGX_MOD_DIRNAME} /root/${NGX_MOD_DIRNAME}
+RUN ls -lah /root/
 RUN [ -f "${NGX_MOD_FILENAME}.reconfigure" ] && ./configure --with-compat --add-dynamic-module=../${NGX_MOD_DIRNAME}
 
 RUN make modules && \
