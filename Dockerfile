@@ -1,8 +1,6 @@
 FROM nginx:1.24.0-alpine-slim
 
 ENV NGX_V=1.24.0
-ENV NGX_DM=nginx-dfunction-module
-ENV NGX_MN=ngx_http_dfunction_module
 ENV NJS_VERSION=0.7.12
 
 RUN set -x \
@@ -91,25 +89,34 @@ RUN wget https://nginx.org/download/nginx-${NGX_V}.tar.gz && \
     tar -zxvf nginx-${NGX_V}.tar.gz && \
     rm nginx-${NGX_V}.tar.gz
 
-#ADD ${NGX_DM} /root/${NGX_DM}
-
 WORKDIR /root/nginx-${NGX_V}
 
 RUN apk add --no-cache --virtual .compile build-base pcre-dev zlib-dev util-linux-dev gd-dev libxml2-dev openssl-dev openssl
-    # ./configure --with-compat --add-dynamic-module=../${NGX_DM} && \
-    # make modules && \
-    # cp ./objs/${NGX_MN}.so /etc/nginx/modules/
 
-# RUN sed -i "1s#^#load_module modules/${NGX_MN}.so;#" /etc/nginx/nginx.conf
-# RUN cat /etc/nginx/nginx.conf
-# RUN echo -e $'\
-# server {\n\
-# \n\
-#     listen 80 default_server;\n\
-# \n\
-#     location / {\n\
-#         dfunction;\n\
-#     }\n\
-# }\
-# ' > /etc/nginx/conf.d/${NGX_DM}.conf
-# RUN cat /etc/nginx/conf.d/${NGX_DM}.conf
+# CUSTOM MODULE PART
+ARG NGX_CUSTOM_MODULE_NAME=dfunction
+
+ENV NGX_MOD_DIRNAME=nginx-${NGX_CUSTOM_MODULE_NAME}-module
+ENV NGX_MOD_FILENAME=ngx_http_${NGX_CUSTOM_MODULE_NAME}_module
+
+RUN sed -i "1s#^#load_module modules/${NGX_MOD_FILENAME}.so;#" /etc/nginx/nginx.conf
+RUN cat /etc/nginx/nginx.conf
+RUN echo -e $"\
+server {\n\
+\n\
+    listen 80 default_server;\n\
+\n\
+    location / {\n\
+        ${NGX_CUSTOM_MODULE_NAME};\n\
+    }\n\
+}\
+" > /etc/nginx/conf.d/${NGX_MOD_DIRNAME}.conf
+RUN cat /etc/nginx/conf.d/${NGX_MOD_DIRNAME}.conf
+
+# do reconfigure only on new module
+RUN [ -d "/root/${NGX_MOD_DIRNAME}" ] || touch /root/${NGX_MOD_FILENAME}.reconfigure
+ADD ${NGX_MOD_DIRNAME} /root/${NGX_MOD_DIRNAME}
+RUN [ -f "${NGX_MOD_FILENAME}.reconfigure" ] && ./configure --with-compat --add-dynamic-module=../${NGX_MOD_DIRNAME}
+
+RUN make modules && \
+    cp ./objs/${NGX_MOD_FILENAME}.so /etc/nginx/modules/
