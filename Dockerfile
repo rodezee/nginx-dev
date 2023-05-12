@@ -125,5 +125,6 @@ ADD ${NGX_MOD_DIRNAME} /root/${NGX_MOD_DIRNAME}
 # ENV RECONFIGURE=${RECONFIGURE}
 # RUN [ "$RECONFIGURE" = true ]  && ./configure --with-compat --add-dynamic-module=../${NGX_MOD_DIRNAME} || true
 
-RUN make modules && ./configure --with-compat --add-dynamic-module=../${NGX_MOD_DIRNAME} || make modules && \
-    cp ./objs/${NGX_MOD_FILENAME}.so /etc/nginx/modules/
+RUN make modules || ./configure --with-compat --add-dynamic-module=../${NGX_MOD_DIRNAME} && make modules
+
+RUN cp ./objs/${NGX_MOD_FILENAME}.so /etc/nginx/modules/
