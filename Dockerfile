@@ -101,7 +101,7 @@ ENV NGX_MOD_FILENAME=ngx_http_${NGX_CUSTOM_MODULE_NAME}_module
 
 RUN sed -i "1s#^#load_module modules/${NGX_MOD_FILENAME}.so;#" /etc/nginx/nginx.conf
 RUN cat /etc/nginx/nginx.conf
-RUN echo -e $"\
+RUN echo -e "\
 server {\n\
 \n\
     listen 80 default_server;\n\
