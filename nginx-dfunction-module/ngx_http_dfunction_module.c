@@ -29,10 +29,11 @@
 #include <ngx_config.h>
 #include <ngx_core.h>
 #include <ngx_http.h>
-/* #include <stdio.h> */
+#include <stdio.h>
+#include <string.h>
 
 
-#define DFUNCTION "hello dfunction\r\n"
+#define DFUNCTION "hello dfunction hello\r\n"
 
 static char *ngx_http_dfunction(ngx_conf_t *cf, ngx_command_t *cmd, void *conf);
 static ngx_int_t ngx_http_dfunction_handler(ngx_http_request_t *r);
@@ -109,7 +110,7 @@ static ngx_int_t ngx_http_dfunction_handler(ngx_http_request_t *r)
         sz = (size_t) r->args.len;
     }
 
-    r->headers_out.content_type.len = strlen("text/html") - 1;
+    r->headers_out.content_type.len = strlen("text/html");
     r->headers_out.content_type.data = (u_char *) "text/html";
     r->headers_out.status = NGX_HTTP_OK;
     r->headers_out.content_length_n = sz;
@@ -156,3 +157,4 @@ static char *ngx_http_dfunction(ngx_conf_t *cf, ngx_command_t *cmd, void *conf)
 
     return NGX_CONF_OK;
 } /* ngx_http_dfunction */
+

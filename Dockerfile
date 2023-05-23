@@ -1,6 +1,6 @@
 FROM nginx:1.24.0-alpine-slim
 
-ENV NGX_V=1.24.0
+ENV NGINX_VERSION=1.24.0
 ENV NJS_VERSION=0.7.12
 
 RUN set -x \
@@ -85,13 +85,13 @@ RUN set -x \
 
 WORKDIR /root/
 
-RUN wget https://nginx.org/download/nginx-${NGX_V}.tar.gz && \
-    tar -zxvf nginx-${NGX_V}.tar.gz && \
-    rm nginx-${NGX_V}.tar.gz
+RUN wget https://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz && \
+    tar -zxvf nginx-${NGINX_VERSION}.tar.gz && \
+    rm nginx-${NGINX_VERSION}.tar.gz
 
-WORKDIR /root/nginx-${NGX_V}
+WORKDIR /root/nginx-${NGINX_VERSION}
 
-RUN apk add --no-cache --virtual .compile build-base pcre-dev zlib-dev util-linux-dev gd-dev libxml2-dev openssl-dev openssl
+RUN apk add --no-cache --virtual .compile build-base pcre2-dev zlib-dev util-linux-dev gd-dev libxml2-dev openssl-dev openssl
 
 # CUSTOM MODULE PART
 ARG NGX_CUSTOM_MODULE_NAME=dfunction
@@ -109,23 +109,15 @@ server {\n\
     location / {\n\
         ${NGX_CUSTOM_MODULE_NAME};\n\
     }\n\
-}\
-" > /etc/nginx/conf.d/${NGX_MOD_DIRNAME}.conf
+}" > /etc/nginx/conf.d/${NGX_MOD_DIRNAME}.conf
 RUN cat /etc/nginx/conf.d/${NGX_MOD_DIRNAME}.conf
 
-# # do reconfigure only on new module
-# RUN [ -d "/root/${NGX_MOD_DIRNAME}" ] || touch /root/${NGX_MOD_FILENAME}.reconfigure
-# ADD ${NGX_MOD_DIRNAME} /root/${NGX_MOD_DIRNAME}
-# RUN ls -lah /root/
-# RUN [ -f "/root/${NGX_MOD_FILENAME}.reconfigure" ] && \
-#     ./configure --with-compat --add-dynamic-module=../${NGX_MOD_DIRNAME} && rm /root/${NGX_MOD_FILENAME}.reconfigure || true
 ADD ${NGX_MOD_DIRNAME} /root/${NGX_MOD_DIRNAME}
-# ARG RECONFIGURE=false
-# ENV RECONFIGURE=${RECONFIGURE}
-# RUN [ "$RECONFIGURE" = true ] && ./configure --with-compat --add-dynamic-module=../${NGX_MOD_DIRNAME} || true
 
-COPY --from=rodezee/nginx-dev:0.0.1 /root/nginx-${NGX_V} /root/nginx-${NGX_V}
+# do configure only on new module
+RUN ./configure --with-compat --add-dynamic-module=../${NGX_MOD_DIRNAME}
+# || skip configure and use configuration from already build image
+#COPY --from=rodezee/nginx-dev:0.0.1 /root/nginx-${NGINX_VERSION} /root/nginx-${NGINX_VERSION}
 
-RUN make modules || ./configure --with-compat --add-dynamic-module=../${NGX_MOD_DIRNAME} && make modules
-                
-RUN cp ./objs/${NGX_MOD_FILENAME}.so /etc/nginx/modules/
+RUN make modules && \
+    cp ./objs/${NGX_MOD_FILENAME}.so /etc/nginx/modules/
